@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { render } from "@testing-library/react";
+import PropTypes from "prop-types";
 
 const App = () => {
   const profiles = [
@@ -25,8 +25,13 @@ const User = (props) => {
   );
 };
 
-User.defaultProps = {
-  age: 1,
+User.propTypes = {
+  name: PropTypes.string,
+  age: PropTypes.number.isRequired,
 };
+
+// User.defaultProps = {
+//   age: 1,
+// };
 
 export default App;
