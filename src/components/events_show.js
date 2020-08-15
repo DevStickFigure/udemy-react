@@ -4,6 +4,8 @@ import { Field, reduxForm, isValid } from 'redux-form';
 
 import { getEvent, deleteEvent, putEvent } from '../actions';
 import { Link } from 'react-router-dom';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 class EventsShow extends Component {
   constructor(props) {
@@ -22,14 +24,18 @@ class EventsShow extends Component {
       input,
       label,
       type,
-      meta: { error },
+      meta: { error, touched },
     } = field;
 
     return (
-      <div>
-        <input {...input} placeholder={label} type={type} />
-        {error && <span>{error}</span>}
-      </div>
+      <TextField
+        hintText={label}
+        floatingLabelText={label}
+        type={type}
+        errorText={touched && error}
+        {...input}
+        fullWidth={true}
+      />
     );
   }
   async onDeleteClick() {
@@ -45,23 +51,26 @@ class EventsShow extends Component {
 
   render() {
     const { handleSubmit, pristine, submitting, invalid } = this.props;
+    const style = { margin: 12 };
     return (
-      <div>
-        <form onSubmit={handleSubmit(this.onSubmit)}>
-          <div>
-            <Field label="title" name="title" type="text" component={this.renderField} />
-            <Field label="body" name="body" type="text" component={this.renderField} />
-          </div>
+      <form onSubmit={handleSubmit(this.onSubmit)}>
+        <div>
+          <Field label="title" name="title" type="text" component={this.renderField} />
+          <Field label="body" name="body" type="text" component={this.renderField} />
+        </div>
 
-          <div>
-            <input type="submit" value="Submit" disabled={pristine || submitting || invalid} />
-            <Link to="/">Cancel</Link>
-            <Link to="/" onClick={this.onDeleteClick}>
-              Delete
-            </Link>
-          </div>
-        </form>
-      </div>
+        <div>
+          <RaisedButton
+            label="Submit"
+            type="submit"
+            style={style}
+            disabled={pristine || submitting || invalid}
+          />
+
+          <RaisedButton label="Cancel" style={style} containerElement={<Link to="/" />} />
+          <RaisedButton label="Delete" style={style} onClick={this.onDeleteClick} />
+        </div>
+      </form>
     );
   }
 }
